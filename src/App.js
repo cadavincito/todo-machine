@@ -42,7 +42,11 @@ function App(props) {
     const todoIndex = todos.findIndex(todo => todo.text == text);
     //inyects the old array to this array
     const newTodos = [...todos];
+    if(newTodos[todoIndex].completed === false){
     newTodos[todoIndex].completed = true;
+    }else{
+      newTodos[todoIndex].completed = false;
+    }
     //now we change the state of the todos
     setTodos(newTodos);
   };
