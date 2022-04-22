@@ -33,9 +33,29 @@ function App(props) {
       const searchText = searchValue.toLowerCase();
       //asks if the todoText has the searchText string in it
       return todoText.includes(searchText);
-    })
-    
+    });
   }
+
+  //this funcction is called when the
+  //check icon is pressed by the user
+  const completeTodos = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text == text);
+    //inyects the old array to this array
+    const newTodos = [...todos];
+    newTodos[todoIndex].completed = true;
+    //now we change the state of the todos
+    setTodos(newTodos);
+  };
+
+  const deleteTodos = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text == text);
+    //inyects the old array to this array
+    const newTodos = [...todos];
+    //takes out the desired element
+    newTodos.splice(todoIndex,1);
+    //now we change the state of the todos
+    setTodos(newTodos);
+  };
 
   return (
    <React.Fragment>
@@ -56,6 +76,8 @@ function App(props) {
           key={todo.text} 
           text={todo.text} 
           completed={todo.completed}
+          onComplete = {() => completeTodos(todo.text)}
+          onDelete = {() => deleteTodos(todo.text)}
        />
      ))}
    

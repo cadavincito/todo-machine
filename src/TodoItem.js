@@ -13,14 +13,14 @@ const onDelete = ()  => {
 
   return (
     <li className="TodoItem">
-      <span onClick={onComplete}  className={`Icon Icon-check ${props.completed && 'Icon-check--active'}`}>
+      <span onClick={props.onComplete}  className={`Icon Icon-check ${props.completed && 'Icon-check--active'}`}>
         √
       </span>
       {/* si se cumple la condición de props, la clase pasa a ser TodoItem-p--complete y el texto aparece rayado*/}
       <p className={`TodoItem-p ${props.completed && 'TodoItem-p--complete'}`}>
         {props.text}
       </p>
-      <span onClick={onDelete} className="Icon Icon-delete">
+      <span onClick={props.onDelete} className="Icon Icon-delete">
         X
       </span>
     </li>
