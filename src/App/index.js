@@ -1,21 +1,37 @@
 import React from "react";
-import {TodoCounter} from '../TodoCounter';
-import {TodoSearch} from '../TodoSearch';
-import {TodoList} from '../TodoList';
-import {TodoItem} from '../TodoItem';
-import {CreateTodoButton} from '../CreateTodoButton';
+import {AppUI} from './AppUI';
 
-const defaultTodos = [
-  {text:"pipi", completed: true},
-  {text:"popo", completed: true},
-  {text:"jeje", completed: false}
-];
+//custom hook
+function useLocalStorage(itemName,initialValue){
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
 
-function App(props) {
+  if(!localStorageItem){
+    //an empty array is created
+    localStorage.setItem(itemName,JSON.stringify(initialValue));
+    parsedItem = initialValue;
+  }else{
+    parsedItem = JSON.parse(localStorageItem);
+  }
 
   //defaultTodos is asigned as value of the state in this case
-  //'todos'
-  const [todos,setTodos] = React.useState(defaultTodos);
+  //any item 
+  const [item,setItem] = React.useState(parsedItem);   
+
+  //param is an array with new todos
+  const saveItem = (newItems) => {
+    const stringfiedItems = JSON.stringify(newItems);
+    localStorage.setItem(itemName,stringfiedItems);
+    setItem(newItems);
+  };
+
+  return[item,saveItem];
+}
+
+function App(props) {
+  const [todos,saveTodos] = useLocalStorage('TODOS_V1',[]);
+
+
   const [searchValue, setSearchValue] = React.useState('');
 
   const completedTodos = todos.filter(todo => todo.completed === true).length;
@@ -36,10 +52,12 @@ function App(props) {
     });
   }
 
+  
+
   //this funcction is called when the
   //check icon is pressed by the user
-  const completeTodos = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text == text);
+  const completeTodo = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text === text);
     //inyects the old array to this array
     const newTodos = [...todos];
     if(newTodos[todoIndex].completed === false){
@@ -48,48 +66,29 @@ function App(props) {
       newTodos[todoIndex].completed = false;
     }
     //now we change the state of the todos
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
-  const deleteTodos = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text == text);
+  const deleteTodo = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text === text);
     //inyects the old array to this array
     const newTodos = [...todos];
     //takes out the desired element
     newTodos.splice(todoIndex,1);
     //now we change the state of the todos
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
-   <React.Fragment>
-     <TodoCounter
-     completedTodos = {completedTodos}
-      totalTodos = {totalTodos}
-     />
-
-     <TodoSearch
-     searchValue = {searchValue}
-     setSearchValue = {setSearchValue}
-     />
-   
-    
-   <TodoList/>
-     {searchedTodos.map(todo => (
-       <TodoItem 
-          key={todo.text} 
-          text={todo.text} 
-          completed={todo.completed}
-          onComplete = {() => completeTodos(todo.text)}
-          onDelete = {() => deleteTodos(todo.text)}
-       />
-     ))}
-   
-
-   <CreateTodoButton/>
-
-   
-   </React.Fragment>
+   <AppUI
+      totalTodos={totalTodos}
+      completedTodos={completedTodos}
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
+      searchedTodos={searchedTodos}
+      completeTodo={completeTodo}
+      deleteTodo={deleteTodo}
+   />
   );
 }
 
