@@ -15,6 +15,8 @@ function TodoProvider(props){
     
     
       const [searchValue, setSearchValue] = React.useState('');
+      // state for ontrolling the modal
+      const [openModal, setOpenModal] = React.useState(false);
     
       const completedTodos = todos.filter(todo => todo.completed === true).length;
       const totalTodos = todos.length;
@@ -34,6 +36,19 @@ function TodoProvider(props){
         });
       }
     
+      //Add todo
+      //this funcction is called when the
+      //check icon is pressed by the user
+      const addTodo = (text) => {
+        //inyects the old array to this array
+        const newTodos = [...todos];
+        newTodos.push({
+          completed:false,
+          text,
+        });
+        //now we change the state of the todos
+        saveTodos(newTodos);
+      };
     
     
       //this funcction is called when the
@@ -71,7 +86,10 @@ function TodoProvider(props){
             setSearchValue,
             searchedTodos,
             completeTodo,
+            addTodo,
             deleteTodo,
+            openModal,
+            setOpenModal
         }}>
             {props.children}
         </TodoContext.Provider>

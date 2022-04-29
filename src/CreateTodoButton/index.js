@@ -3,12 +3,20 @@ import './CreateTodoButton.css'
 
 function CreateTodoButton(props){
 
-    const onClickButton = (msg) => {
-        alert(msg);
+    const onClickButton = () => {
+        // if(props.openModal === false){
+        //     props.setOpenModal(true);
+        // }else{
+        //     props.setOpenModal(false);
+        // }
+
+        //prevstate is a react thing that allows me to switch states
+        props.setOpenModal(prevState => !prevState);
     };
+
     return(
         <button className="CreateTodoButton"
-            onClick={() => onClickButton('aqui se abre el modal')}
+            onClick={onClickButton}
         >+</button>
     );
 }
