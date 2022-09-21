@@ -7,6 +7,7 @@ import { TodoItem } from '../TodoItem';
 import { CreateTodoButton } from '../CreateTodoButton';
 import { Modal } from '../Modal';
 import { TodoForm } from "../TodoForm";
+import { TodoTitle } from "../TodoTitle";
 
 function AppUI() {
 
@@ -21,6 +22,8 @@ function AppUI() {
   } = React.useContext(TodoContext);
   return (
     <React.Fragment>
+
+      <TodoTitle />
       
       <TodoCounter />
 
