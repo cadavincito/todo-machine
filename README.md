@@ -1,3 +1,7 @@
+## This app is deployed at:
+
+https://todo-machine-7hbv.vercel.app/
+
 ## Available Scripts
 
 In the project directory, you can run:
